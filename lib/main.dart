@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stock_flutter_app/_DriversPageState.dart';
+import 'package:stock_flutter_app/_OperatorsPageState.dart';
 
 import '_LoginPageState.dart';
 import '_RegistrationPageState.dart';
@@ -19,7 +21,9 @@ class MyApp extends StatelessWidget {
           // home: MyLoginPage(),
           routes: {
             '/': (BuildContext context) => MyLoginPage(),
-            '/registration': (BuildContext context) => MyRegistrationPage()
+            '/registration': (BuildContext context) => MyRegistrationPage(),
+            '/drivers': (BuildContext context) => MyDriversPage(),
+            '/operators': (BuildContext context) => MyOperatorsPage()
           },
         );
   }
