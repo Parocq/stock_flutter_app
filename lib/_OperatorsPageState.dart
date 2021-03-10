@@ -84,8 +84,7 @@ Future _asyncInputDialog(BuildContext context) async {
                 child: new TextField(
               controller: fioTextEdAddController,
               autofocus: true,
-              decoration:
-                  new InputDecoration(hintText: 'Input fio'),
+              decoration: new InputDecoration(hintText: 'Input fio'),
               onChanged: (value) {
                 fioInsertDialog = value;
               },
@@ -94,8 +93,7 @@ Future _asyncInputDialog(BuildContext context) async {
                 child: new TextField(
               controller: phoneTextEdAddController,
               autofocus: true,
-              decoration: new InputDecoration(
-                  hintText: 'Input phone number'),
+              decoration: new InputDecoration(hintText: 'Input phone number'),
               onChanged: (value) {
                 numberInsertDialog = value;
               },
@@ -104,8 +102,7 @@ Future _asyncInputDialog(BuildContext context) async {
                 child: new TextField(
               controller: accLoginTextEdAddController,
               autofocus: true,
-              decoration: new InputDecoration(
-                  hintText: 'Input account login'),
+              decoration: new InputDecoration(hintText: 'Input account login'),
               onChanged: (value) {
                 accLoginInsertDialog = value;
               },
@@ -114,8 +111,8 @@ Future _asyncInputDialog(BuildContext context) async {
                 child: new TextField(
               controller: accPassTextEdAddController,
               autofocus: true,
-              decoration: new InputDecoration(
-                  hintText: 'Input account password'),
+              decoration:
+                  new InputDecoration(hintText: 'Input account password'),
               onChanged: (value) {
                 accPassInsertDialog = value;
               },
@@ -301,25 +298,6 @@ Future _asyncUpdateDialog(BuildContext context) async {
 // ignore: deprecated_member_use
 List<TableOperator> items = new List();
 
-Future<void> selectAllOperators() async {
-  TableOperator tableOperator =
-      new TableOperator(false, Operator(1, "", "", Account(1, "", "", "")));
-  Response response = await Networker.instance.getAllOperators();
-  //получаем ответ от сервера
-  final itemsq = json.decode(response.body).cast<Map<String, dynamic>>();
-  print(itemsq);
-  //преобразуем ответ в список водителей
-  List<Operator> list = itemsq.map<Operator>((json) {
-    return Operator.fromJson(json);
-  }).toList();
-
-  //заполнение нового списка
-  items.clear();
-  list.forEach((element) {
-    items.add(tableOperator.fromOperator(element));
-  });
-}
-
 Future<void> insertOperator(Operator operator) async {
   String jsonOperator = operator.toJson(operator);
   await Networker.instance.insertOperator(jsonOperator);
@@ -341,6 +319,31 @@ Future<void> removeOperator() async {
 }
 
 class _OperatorsPageState extends State<MyOperatorsPage> {
+  @override
+  void initState() {
+    super.initState();
+    // fetchData();
+    selectAllOperators();
+  }
+
+  Future<void> selectAllOperators() async {
+    TableOperator tableOperator =
+        new TableOperator(false, Operator(1, "", "", Account(1, "", "", "")));
+    Response response = await Networker.instance.getAllOperators();
+    final itemsq = json.decode(response.body).cast<Map<String, dynamic>>();
+    print(itemsq);
+    List<Operator> list = itemsq.map<Operator>((json) {
+      return Operator.fromJson(json);
+    }).toList();
+
+    items.clear();
+    setState(() {
+      list.forEach((element) {
+        items.add(tableOperator.fromOperator(element));
+      });
+    });
+  }
+
   bool sort = true;
   bool sortId = true;
   bool sortFio = true;

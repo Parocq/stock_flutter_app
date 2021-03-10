@@ -214,20 +214,16 @@ Future _asyncUpdateDialog(BuildContext context) async {
 }
 
 /**-------------------------------------------------------------------- UPDATE ITEM DIALOG END--------------------------------------------------------------------**/
-// ignore: deprecated_member_use
 List<TableDriver> items = new List();
 
 Future<void> selectAllDrivers() async {
-  TableDriver tableDriver = new TableDriver(false,Driver(1,"",""));
+  TableDriver tableDriver = new TableDriver(false, Driver(1, "", ""));
   Response response = await Networker.instance.getAllDrivers();
-  //получаем ответ от сервера
   final itemsq = json.decode(response.body).cast<Map<String, dynamic>>();
-  //преобразуем ответ в список водителей
   List<Driver> list = itemsq.map<Driver>((json) {
     return Driver.fromJson(json);
   }).toList();
 
-  //заполнение нового списка
   items.clear();
   list.forEach((element) {
     items.add(tableDriver.fromDriver(element));
@@ -247,7 +243,7 @@ Future<void> updateDriver(Driver driver) async {
 Future<void> removeDriver() async {
   List<int> list = new List();
   items.forEach((element) {
-    if (element.checked == true){
+    if (element.checked == true) {
       list.add(element.driver.id);
     }
   });
@@ -255,6 +251,28 @@ Future<void> removeDriver() async {
 }
 
 class _DriversPageState extends State<MyDriversPage> {
+  @override
+  void initState() {
+    super.initState();
+    selectAllDrivers();
+  }
+
+  Future<void> selectAllDrivers() async {
+    TableDriver tableDriver = new TableDriver(false, Driver(1, "", ""));
+    Response response = await Networker.instance.getAllDrivers();
+    final itemsq = json.decode(response.body).cast<Map<String, dynamic>>();
+    List<Driver> list = itemsq.map<Driver>((json) {
+      return Driver.fromJson(json);
+    }).toList();
+
+    setState(() {
+      items.clear();
+      list.forEach((element) {
+        items.add(tableDriver.fromDriver(element));
+      });
+    });
+  }
+
   bool sort = true;
   bool sortId = true;
   bool sortFio = true;
@@ -405,8 +423,12 @@ class _DriversPageState extends State<MyDriversPage> {
       list.clear();
 
     for (int i = 0; i < items.length; i++) {
-      print("On cycle. i = "+i.toString()+"Items.length = "+items.length.toString()+"\n");
-      print("Item i="+i.toString()+" == "+items[i].toString());
+      print("On cycle. i = " +
+          i.toString() +
+          "Items.length = " +
+          items.length.toString() +
+          "\n");
+      print("Item i=" + i.toString() + " == " + items[i].toString());
       list.add(DataRow(
         cells: [
           DataCell(Text('id:${items[i].driver.id}')),

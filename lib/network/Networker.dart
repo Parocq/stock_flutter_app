@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class Networker {
-  final baseUrl = 'http://192.168.1.6:8080';
+  String baseUrl = 'http://192.168.1.6:8080';
   final headers = {'Content-Type': 'application/json'};
 
   Networker._privateConstructor();
@@ -13,6 +13,7 @@ class Networker {
 
   /**----------------------------- ACCOUNT -----------------------------**/
   Future<Response> loginRequest(String body) async {
+    print('baseUrl:${baseUrl}');
     Response response = await post(baseUrl + "/login",
         headers: headers, body: body, encoding: Encoding.getByName("utf-8"));
 
